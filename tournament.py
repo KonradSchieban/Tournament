@@ -13,14 +13,42 @@ def connect():
 
 def deleteMatches():
     """Remove all the match records from the database."""
+    conn = connect()
+    c = conn.cursor()
+    c.execute("DROP TABLE IF EXISTS matches;")
+    c.execute("CREATE TABLE matches (id SERIAL PRIMARY KEY,"
+                                    "player1 INTEGER NOT NULL,"
+                                    "player2 INTEGER NOT NULL,"
+                                    "winner INTEGER NOT NULL);")
+    conn.commit()
+    conn.close()
 
+    return
 
 def deletePlayers():
     """Remove all the player records from the database."""
+    conn = connect()
+    c = conn.cursor()
+    c.execute("DROP TABLE IF EXISTS players;")
+    c.execute("CREATE TABLE players (id SERIAL PRIMARY KEY,"
+                                    "name varchar(50) NOT NULL,"
+                                    "wins INTEGER DEFAULT 0,"
+                                    "matches INTEGER DEFAULT 0);")
+    conn.commit()
+    conn.close()
+
+    return
 
 
 def countPlayers():
     """Returns the number of players currently registered."""
+    conn = connect()
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) FROM players;")
+    result = c.fetchone()
+    conn.close()
+
+    return result[0]
 
 
 def registerPlayer(name):
@@ -73,4 +101,3 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
-
