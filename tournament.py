@@ -15,7 +15,6 @@ def deleteMatches():
     """Remove all the match records from the database."""
     conn = connect()
     c = conn.cursor()
-
     c.execute("DELETE FROM matches;")
     conn.commit()
     conn.close()
@@ -110,6 +109,7 @@ def reportMatch(winner, loser):
     return
 
 
+
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
 
@@ -125,3 +125,15 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
+    conn = connect()
+    c = conn.cursor()
+    c.execute("SELECT p1_id, p1_name, p2_id, p2_name FROM swiss_pairs;")
+    rows = c.fetchall()
+    conn.close()
+
+    swiss_pairs_list = []
+    for row in rows:
+        swiss_pairs_list.append(row)
+
+    return swiss_pairs_list
+
