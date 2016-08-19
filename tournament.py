@@ -6,6 +6,7 @@
 import psycopg2
 import bleach
 
+
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
     return psycopg2.connect("dbname=tournament")
@@ -80,7 +81,8 @@ def playerStandings():
 
     conn = connect()
     c = conn.cursor()
-    c.execute("SELECT id, name, wins, num_matches FROM players_wins_matches_v;")
+    c.execute("SELECT id, name, wins, num_matches "
+              "FROM players_wins_matches_v;")
     rows = c.fetchall()
     conn.close()
 
@@ -102,12 +104,12 @@ def reportMatch(winner, loser):
     conn = connect()
     c = conn.cursor()
     c.execute("INSERT INTO matches (winner, loser) "
-              "VALUES ('%(winner)s','%(loser)s');" % {'winner': winner, 'loser': loser})
+              "VALUES ('%(winner)s','%(loser)s');" % {'winner': winner,
+                                                      'loser': loser})
     conn.commit()
     conn.close()
 
     return
-
 
 
 def swissPairings():
@@ -136,4 +138,3 @@ def swissPairings():
         swiss_pairs_list.append(row)
 
     return swiss_pairs_list
-
