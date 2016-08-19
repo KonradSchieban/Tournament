@@ -14,6 +14,5 @@ CREATE TABLE players (id SERIAL PRIMARY KEY,
 
 DROP TABLE IF EXISTS matches;
 CREATE TABLE matches (id SERIAL PRIMARY KEY,
-                      player1 INTEGER NOT NULL,
-                      player2 INTEGER NOT NULL,
-                      winner INTEGER NOT NULL);
+                      winner INTEGER NOT NULL,
+                      loser INTEGER NOT NULL);
