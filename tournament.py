@@ -4,7 +4,7 @@
 #
 
 import psycopg2
-
+import bleach
 
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
@@ -15,25 +15,19 @@ def deleteMatches():
     """Remove all the match records from the database."""
     conn = connect()
     c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS matches;")
-    c.execute("CREATE TABLE matches (id SERIAL PRIMARY KEY,"
-                                    "player1 INTEGER NOT NULL,"
-                                    "player2 INTEGER NOT NULL,"
-                                    "winner INTEGER NOT NULL);")
+
+    c.execute("DELETE FROM matches;")
     conn.commit()
     conn.close()
 
     return
 
+
 def deletePlayers():
     """Remove all the player records from the database."""
     conn = connect()
     c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS players;")
-    c.execute("CREATE TABLE players (id SERIAL PRIMARY KEY,"
-                                    "name varchar(50) NOT NULL,"
-                                    "wins INTEGER DEFAULT 0,"
-                                    "matches INTEGER DEFAULT 0);")
+    c.execute("DELETE FROM players;")
     conn.commit()
     conn.close()
 
@@ -63,12 +57,12 @@ def registerPlayer(name):
 
     conn = connect()
     c = conn.cursor()
-    c.execute("INSERT INTO players (name) VALUES ('%s');" % name)
+    query = "INSERT INTO players (name) VALUES (%s);"
+    c.execute(query, (bleach.clean(name),))
     conn.commit()
     conn.close()
 
     return
-
 
 
 def playerStandings():
@@ -84,6 +78,18 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
+
+    conn = connect()
+    c = conn.cursor()
+    c.execute("SELECT id, name, wins, num_matches FROM players_wins_matches_v;")
+    rows = c.fetchall()
+    conn.close()
+
+    standings_list = []
+    for row in rows:
+        standings_list.append(row)
+
+    return standings_list
 
 
 def reportMatch(winner, loser):
