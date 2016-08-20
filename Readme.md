@@ -37,14 +37,25 @@ Import the tables and views from the file tournament.sql with the command
 
     > \i tournament.sql
 
-Exit the Postgresql with \q and run the test from the terminal with the command
+Exit Postgresql with \q and run the test from the terminal with the command
 
     > python tournament_test.py
 
 <h2>4. Implementation</h2>
 
 <b>4.1 tournament.sql</b>
-    This file contains
+
+This file contains the table definitions and views which are used to setup the tournament. Whenever the content
+is imported to Postgresql, all tables are dropped (cascaded, means all depending data is deleted as well) and
+recreated.
+
+The tables are:
+    - <b>players</b>: Contains all player ids (PK) and (full) names.
+    - <b>matches</b>: Contains all match ids and their respective winner id and loser id
+
+The views are:
+    - <b>players_matches_v</b>: View which returns player id and name together with the number of matches he played
+
 
 <b>4.2. tournament.py</b>
 
