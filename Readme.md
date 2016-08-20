@@ -50,11 +50,13 @@ is imported to Postgresql, all tables are dropped (cascaded, means all depending
 recreated.
 
 The tables are:
-    - <b>players</b>: Contains all player ids (PK) and (full) names.
-    - <b>matches</b>: Contains all match ids and their respective winner id and loser id
+
+ - <b>players</b>: Contains all player ids (PK) and (full) names.
+ - <b>matches</b>: Contains all match ids and their respective winner id and loser id
 
 The views are:
-    - <b>players_matches_v</b>: View which returns player id and name together with the number of matches he played
+
+ - <b>players_matches_v</b>: View which returns player id and name together with the number of matches he played
 
 
 <b>4.2. tournament.py</b>
