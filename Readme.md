@@ -60,7 +60,7 @@ The views are:
  - <b>players_wins_matches_v</b>: View which return player id and name together with his number of wins and matches
  he played. This view is used to create player ranking, ordered by the number of wins.
  - <b>players_ranked_v</b>: View which adds the ranking number to th view players_wins_matches_v
- - <b>swiss_pairs<b>: View which returns all swiss pairs according to the tables "players" and "matches".
+ - <b>swiss_pairs</b>: View which returns all swiss pairs according to the tables "players" and "matches".
 It is created by self joining the player ranking view "players_ranked_v".
 
 <b>4.2. tournament.py</b>
