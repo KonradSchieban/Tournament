@@ -4,12 +4,14 @@
 #
 
 import psycopg2
-import bleach
 
 
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+    try:
+        return psycopg2.connect("dbname=tournament")
+    except ConnectionError:
+        print("Connection to database failed")
 
 
 def deleteMatches():
@@ -20,8 +22,6 @@ def deleteMatches():
     conn.commit()
     conn.close()
 
-    return
-
 
 def deletePlayers():
     """Remove all the player records from the database."""
@@ -30,8 +30,6 @@ def deletePlayers():
     c.execute("DELETE FROM players;")
     conn.commit()
     conn.close()
-
-    return
 
 
 def countPlayers():
@@ -58,11 +56,9 @@ def registerPlayer(name):
     conn = connect()
     c = conn.cursor()
     query = "INSERT INTO players (name) VALUES (%s);"
-    c.execute(query, (bleach.clean(name),))
+    c.execute(query, (name, ))
     conn.commit()
     conn.close()
-
-    return
 
 
 def playerStandings():
@@ -103,13 +99,10 @@ def reportMatch(winner, loser):
 
     conn = connect()
     c = conn.cursor()
-    c.execute("INSERT INTO matches (winner, loser) "
-              "VALUES ('%(winner)s','%(loser)s');" % {'winner': winner,
-                                                      'loser': loser})
+    query = "INSERT INTO matches (winner, loser) VALUES (%s,%s);"
+    c.execute(query, (winner, loser, ))
     conn.commit()
     conn.close()
-
-    return
 
 
 def swissPairings():
@@ -138,3 +131,9 @@ def swissPairings():
         swiss_pairs_list.append(row)
 
     return swiss_pairs_list
+
+
+class ConnectionError(Exception):
+
+    def __init__(self, message):
+        self.message = message
