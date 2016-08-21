@@ -1,14 +1,20 @@
 -- Table definitions for the tournament project.
 
-DROP TABLE IF EXISTS players CASCADE;
-CREATE TABLE players (id SERIAL PRIMARY KEY,
-                     name varchar(50) NOT NULL);
+DROP DATABASE IF EXISTS tournament;
+CREATE DATABASE tournament;
 
+\c tournament
 
-DROP TABLE IF EXISTS matches CASCADE;
-CREATE TABLE matches (id SERIAL PRIMARY KEY,
-                      winner INTEGER NOT NULL,
-                      loser INTEGER NOT NULL);
+CREATE TABLE players (
+    id SERIAL PRIMARY KEY,
+    name varchar(50) NOT NULL
+);
+
+CREATE TABLE matches (
+    id SERIAL PRIMARY KEY,
+    winner INTEGER NOT NULL references players(id),
+    loser INTEGER NOT NULL references players(id)
+);
 
 -- View which returns player id and name together with the number of matches he played
 CREATE VIEW players_matches_v AS
