@@ -120,15 +120,27 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
-    conn = connect()
-    c = conn.cursor()
-    c.execute("SELECT p1_id, p1_name, p2_id, p2_name FROM swiss_pairs;")
-    rows = c.fetchall()
-    conn.close()
 
     swiss_pairs_list = []
-    for row in rows:
-        swiss_pairs_list.append(row)
+
+    players_standings_list = playerStandings()
+
+    ranking_index = 0
+    number_players = countPlayers()
+    while ranking_index < number_players:
+        player1_details = players_standings_list[ranking_index]
+        player2_details = players_standings_list[ranking_index + 1]
+
+        player1_id = player1_details[0]
+        player1_name = player1_details[1]
+        player2_id = player2_details[0]
+        player2_name = player2_details[1]
+
+        swiss_pair = (player1_id, player1_name, player2_id, player2_name)
+
+        swiss_pairs_list.append(swiss_pair)
+
+        ranking_index += 2
 
     return swiss_pairs_list
 
