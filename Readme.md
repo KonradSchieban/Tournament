@@ -11,27 +11,17 @@ Implementation of a Tournament database schema using Postgresql and Python.
     |-- tournament_test.py
 
 <h2>2. Prerequisites</h2>
-The Python content requires the libraries Bleach and Psycopg installed. Psycopg is a Python library which is used
-to connect to Postgresql databases and to execute database queries. The library Bleach offers methods to escape
-special characters which are inserted into SQL tables. This is necessary to prevent SQL injections.
+The Python content requires the library Psycopg installed. Psycopg is a Python library which is used
+to connect to Postgresql databases and to execute database queries.
 
-For more information on how to setup these libraries, visit the websites
+For more information on how to setup Psycopg, visit the website
  - http://initd.org/psycopg/docs/install.html
- - https://pypi.python.org/pypi/bleach
 
 <h2>3. How to setup and run</h2>
 To run the tournament tests in module tournament_test.py you firs need to define the necessary tables and views.
 Connect to postgresql by typing
 
     > psql
-
-and create the tournament database with the command
-
-    > CREATE DATABASE tournament
-
-Connect to the database with the command
-
-    > \c tournament
 
 Import the tables and views from the file tournament.sql with the command
 
@@ -46,8 +36,7 @@ Exit Postgresql with \q and run the test from the terminal with the command
 <b>4.1 tournament.sql</b>
 
 This file contains the table definitions and views which are used to setup the tournament. Whenever the content
-is imported to Postgresql, all tables are dropped (cascaded, means all depending data is deleted as well) and
-recreated.
+is imported to Postgresql, the database will be dropped and recreated including its table definitions.
 
 The tables are:
 
@@ -59,9 +48,6 @@ The views are:
  - <b>players_matches_v</b>: View which returns player id and name together with the number of matches he played.
  - <b>players_wins_matches_v</b>: View which return player id and name together with his number of wins and matches
  he played. This view is used to create player ranking, ordered by the number of wins.
- - <b>players_ranked_v</b>: View which adds the ranking number to th view players_wins_matches_v
- - <b>swiss_pairs</b>: View which returns all swiss pairs according to the tables "players" and "matches".
-It is created by self joining the player ranking view "players_ranked_v".
 
 <b>4.2. tournament.py</b>
 
